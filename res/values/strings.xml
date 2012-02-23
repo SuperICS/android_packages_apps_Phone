@@ -727,6 +727,14 @@
     <string name="tty_mode_option_summary">Set TTY mode</string>
     <string name="auto_retry_mode_title">Auto Retry</string>
     <string name="auto_retry_mode_summary">Enable Auto Retry mode</string>
+    <string name="landscape_mode_title">Enable Landscape</string>
+    <string name="landscape_mode_summary">Enable Landscape Mode (if sensor enabled)</string>
+    <string name="enable_statusbar_title">Enable Status bar</string>
+    <string name="enable_statusbar_summary">Enable use of status bar while in call</string>
+    <string name="disable_lightsout_title">Disable LightsOut</string>
+    <string name="disable_lightsout_summary">Disable LightsOut on Nav Bar while in call</string>
+    <string name="exit_to_home_screen_title">Exit To Home on End Call</string>
+    <string name="exit_to_home_screen_summary">Exit to Home screen on End Call rather than going to Call Log</string>
 
     <!-- FDN list screen: menu item label -->
     <string name="menu_add">Add contact</string>
@@ -1599,6 +1607,9 @@
     <string name="description_target_send_sms">Send SMS</string>
     <!-- Description of the decline on target in the Slide unlock screen. [CHAR LIMIT=NONE] -->
     <string name="description_target_decline">Decline</string>
+    
+    <string name="per_change_mobile_network">Change network (2G/3G)</string>  
+    <string name="per_change_mobile_network_desc">Application with this permission can, at any time, change between 2G Data and 3G data. 3G is faster, consumes more batery, and can also cost you more money.</string>
 
     <string name="phone_number_label">My phone number</string>
     <string name="phone_number_summary">Set the phone number for this device</string>
