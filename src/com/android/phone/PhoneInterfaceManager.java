@@ -314,6 +314,7 @@ public class PhoneInterfaceManager extends ITelephony.Stub {
                 mMainThreadHandler.obtainMessage(CMD_TOGGLE_2G));
         Settings.Secure.putInt(mApp.getContentResolver(),
                 Settings.Secure.PREFERRED_NETWORK_MODE, network);
+
     }
 
     private boolean showCallScreenInternal(boolean specifyInitialDialpadState,
