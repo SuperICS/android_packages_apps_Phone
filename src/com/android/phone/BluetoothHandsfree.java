@@ -2942,31 +2942,31 @@ public class BluetoothHandsfree {
      *  are polled and mock updates sent every 1 second */
     private class DebugThread extends Thread {
         /** Turns on/off handsfree profile debugging mode */
-        static final String DEBUG_HANDSFREE = "debug.bt.hfp";
+        private static final String DEBUG_HANDSFREE = "debug.bt.hfp";
 
         /** Mock battery level change - use 0 to 5 */
-        static final String DEBUG_HANDSFREE_BATTERY = "debug.bt.hfp.battery";
+        private static final String DEBUG_HANDSFREE_BATTERY = "debug.bt.hfp.battery";
 
         /** Mock no cellular service when false */
-        static final String DEBUG_HANDSFREE_SERVICE = "debug.bt.hfp.service";
+        private static final String DEBUG_HANDSFREE_SERVICE = "debug.bt.hfp.service";
 
         /** Mock cellular roaming when true */
-        static final String DEBUG_HANDSFREE_ROAM = "debug.bt.hfp.roam";
+        private static final String DEBUG_HANDSFREE_ROAM = "debug.bt.hfp.roam";
 
         /** false to true transition will force an audio (SCO) connection to
          *  be established. true to false will force audio to be disconnected
          */
-        static final String DEBUG_HANDSFREE_AUDIO = "debug.bt.hfp.audio";
+        private static final String DEBUG_HANDSFREE_AUDIO = "debug.bt.hfp.audio";
 
         /** true allows incoming SCO connection out of call.
          */
-        static final String DEBUG_HANDSFREE_AUDIO_ANYTIME = "debug.bt.hfp.audio_anytime";
+        private static final String DEBUG_HANDSFREE_AUDIO_ANYTIME = "debug.bt.hfp.audio_anytime";
 
         /** Mock signal strength change in ASU - use 0 to 31 */
-        static final String DEBUG_HANDSFREE_SIGNAL = "debug.bt.hfp.signal";
+        private static final String DEBUG_HANDSFREE_SIGNAL = "debug.bt.hfp.signal";
 
         /** Debug AT+CLCC: print +CLCC result */
-        static final String DEBUG_HANDSFREE_CLCC = "debug.bt.hfp.clcc";
+        private static final String DEBUG_HANDSFREE_CLCC = "debug.bt.hfp.clcc";
 
         /** Debug AT+BSIR - Send In Band Ringtones Unsolicited AT command.
          * debug.bt.unsol.inband = 0 => AT+BSIR = 0 sent by the AG
@@ -2974,7 +2974,8 @@ public class BluetoothHandsfree {
          * Other values are ignored.
          */
 
-        static final String DEBUG_UNSOL_INBAND_RINGTONE = "debug.bt.unsol.inband";
+        private static final String DEBUG_UNSOL_INBAND_RINGTONE =
+            "debug.bt.unsol.inband";
 
         @Override
         public void run() {
