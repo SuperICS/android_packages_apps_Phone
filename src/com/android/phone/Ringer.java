@@ -17,6 +17,7 @@
 package com.android.phone;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.media.AudioManager;
 import android.media.Ringtone;
 import android.media.RingtoneManager;
@@ -30,7 +31,11 @@ import android.os.ServiceManager;
 import android.os.SystemClock;
 import android.os.SystemProperties;
 import android.os.Vibrator;
+import android.preference.PreferenceManager;
+import android.provider.Settings;
 import android.util.Log;
+
+import java.util.Calendar;
 
 import com.android.internal.telephony.Phone;
 /**
@@ -162,15 +167,17 @@ public class Ringer {
             AudioManager audioManager =
                     (AudioManager) mContext.getSystemService(Context.AUDIO_SERVICE);
 
-            if (audioManager.getStreamVolume(AudioManager.STREAM_RING) == 0) {
+            if (audioManager.getStreamVolume(AudioManager.STREAM_RING) == 0 || inQuietHours()) {
                 if (DBG) log("skipping ring because volume is zero");
                 return;
             }
 
             makeLooper();
             if (mFirstRingEventTime < 0) {
-                mFirstRingEventTime = SystemClock.elapsedRealtime();
-                mRingHandler.sendEmptyMessage(PLAY_RING_ONCE);
+                SharedPreferences callSettings = PreferenceManager.getDefaultSharedPreferences(mContext);
+                int ringDelay = Integer.valueOf(callSettings.getString(CallFeaturesSetting.BUTTON_RING_DELAY_KEY, "0"));
+                mFirstRingEventTime = SystemClock.elapsedRealtime() + ringDelay*1000;
+                mRingHandler.sendEmptyMessageDelayed(PLAY_RING_ONCE, ringDelay*1000);
             } else {
                 // For repeat rings, figure out by how much to delay
                 // the ring so that it happens the correct amount of
@@ -187,7 +194,9 @@ public class Ringer {
                     // We've gotten two ring events so far, but the ring
                     // still hasn't started. Reset the event time to the
                     // time of this event to maintain correct spacing.
-                    mFirstRingEventTime = SystemClock.elapsedRealtime();
+                    if (mFirstRingEventTime <= SystemClock.elapsedRealtime()) {
+                        mFirstRingEventTime = SystemClock.elapsedRealtime();
+                    }
                 }
             }
         }
@@ -340,5 +349,28 @@ public class Ringer {
 
     private static void log(String msg) {
         Log.d(LOG_TAG, msg);
+    }
+    
+    private boolean inQuietHours() {
+        boolean quietHoursEnabled = Settings.System.getInt(mContext.getContentResolver(),
+                Settings.System.QUIET_HOURS_ENABLED, 0) != 0;
+        int quietHoursStart = Settings.System.getInt(mContext.getContentResolver(),
+                Settings.System.QUIET_HOURS_START, 0);
+        int quietHoursEnd = Settings.System.getInt(mContext.getContentResolver(),
+                Settings.System.QUIET_HOURS_END, 0);
+        boolean quietHoursRinger = Settings.System.getInt(mContext.getContentResolver(),
+                Settings.System.QUIET_HOURS_RINGER, 0) != 0;
+        if (quietHoursEnabled && quietHoursRinger && (quietHoursStart != quietHoursEnd)) {
+            // Get the date in "quiet hours" format.
+            Calendar calendar = Calendar.getInstance();
+            int minutes = calendar.get(Calendar.HOUR_OF_DAY) * 60 + calendar.get(Calendar.MINUTE);
+            if (quietHoursEnd < quietHoursStart) {
+                // Starts at night, ends in the morning.
+                return (minutes > quietHoursStart) || (minutes < quietHoursEnd);
+            } else {
+                return (minutes > quietHoursStart) && (minutes < quietHoursEnd);
+            }
+        }
+        return false;
     }
 }
