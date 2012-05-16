@@ -410,10 +410,6 @@ public class Settings extends PreferenceActivity implements DialogInterface.OnCl
                 //Set the modem network mode
                 mPhone.setPreferredNetworkType(modemNetworkMode, mHandler
                         .obtainMessage(MyHandler.MESSAGE_SET_PREFERRED_NETWORK_TYPE));
-
-                Intent intent = new Intent(PhoneToggler.NETWORK_MODE_CHANGED);
-                intent.putExtra(PhoneToggler.NETWORK_MODE, buttonNetworkMode);
-                mPhone.getContext().sendBroadcast(intent, PhoneToggler.CHANGE_NETWORK_MODE_PERM);
             }
         }
 
@@ -423,8 +419,8 @@ public class Settings extends PreferenceActivity implements DialogInterface.OnCl
 
     private class MyHandler extends Handler {
 
-        static final int MESSAGE_GET_PREFERRED_NETWORK_TYPE = 0;
-        static final int MESSAGE_SET_PREFERRED_NETWORK_TYPE = 1;
+        private static final int MESSAGE_GET_PREFERRED_NETWORK_TYPE = 0;
+        private static final int MESSAGE_SET_PREFERRED_NETWORK_TYPE = 1;
 
         @Override
         public void handleMessage(Message msg) {
@@ -460,7 +456,6 @@ public class Settings extends PreferenceActivity implements DialogInterface.OnCl
                             settingsNetworkMode);
                 }
 
-                boolean isLteOnCdma = mPhone.getLteOnCdmaMode() == Phone.LTE_ON_CDMA_TRUE;
                 //check that modemNetworkMode is from an accepted value
                 if (modemNetworkMode == Phone.NT_MODE_WCDMA_PREF ||
                         modemNetworkMode == Phone.NT_MODE_GSM_ONLY ||
@@ -499,10 +494,6 @@ public class Settings extends PreferenceActivity implements DialogInterface.OnCl
                     UpdatePreferredNetworkModeSummary(modemNetworkMode);
                     // changes the mButtonPreferredNetworkMode accordingly to modemNetworkMode
                     mButtonPreferredNetworkMode.setValue(Integer.toString(modemNetworkMode));
-
-                    Intent intent = new Intent(PhoneToggler.NETWORK_MODE_CHANGED);
-                    intent.putExtra(PhoneToggler.NETWORK_MODE, modemNetworkMode);
-                    mPhone.getContext().sendBroadcast(intent, PhoneToggler.CHANGE_NETWORK_MODE_PERM);
                 } else if (modemNetworkMode == Phone.NT_MODE_LTE_ONLY) {
                     // LTE Only mode not yet supported on UI, but could be used for testing
                     if (DBG) log("handleGetPreferredNetworkTypeResponse: lte only: no action");
@@ -522,10 +513,6 @@ public class Settings extends PreferenceActivity implements DialogInterface.OnCl
                 android.provider.Settings.Secure.putInt(mPhone.getContext().getContentResolver(),
                         android.provider.Settings.Secure.PREFERRED_NETWORK_MODE,
                         networkMode );
-
-                Intent intent = new Intent(PhoneToggler.NETWORK_MODE_CHANGED);
-                intent.putExtra(PhoneToggler.NETWORK_MODE, networkMode);
-                mPhone.getContext().sendBroadcast(intent, PhoneToggler.CHANGE_NETWORK_MODE_PERM);
             } else {
                 mPhone.getPreferredNetworkType(obtainMessage(MESSAGE_GET_PREFERRED_NETWORK_TYPE));
             }

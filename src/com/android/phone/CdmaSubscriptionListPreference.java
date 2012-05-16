@@ -102,7 +102,7 @@ public class CdmaSubscriptionListPreference extends ListPreference {
 
     private class CdmaSubscriptionButtonHandler extends Handler {
 
-        static final int MESSAGE_SET_CDMA_SUBSCRIPTION = 0;
+        private static final int MESSAGE_SET_CDMA_SUBSCRIPTION = 0;
 
         @Override
         public void handleMessage(Message msg) {
