@@ -100,6 +100,10 @@
     <string name="apn_settings" msgid="9043423184895642077">"Hozzáférési pontok nevei"</string>
     <string name="settings_label" msgid="3876743539816984008">"Hálózati beállítások"</string>
     <string name="voicemail" msgid="8693759337917898954">"Hangposta"</string>
+    <!-- Call settings screen, message wait indicator name -->
+    <string name="mwi_notification_title">Várakozó üzenet</string>
+    <!-- Call settings screen, message wait indicator summary -->
+    <string name="mwi_notification_summary">Várakozó hangposta üzenet megjelenítése</string>
     <string name="voicemail_abbreviated" msgid="2215592488517217448">"HP:"</string>
     <string name="networks" msgid="8873030692174541976">"Mobilszolgáltatók"</string>
     <string name="call_settings" msgid="6112441768261754562">"Hívásbeállítások"</string>
@@ -191,6 +195,9 @@
     <string name="preferred_network_mode_cdma_only_summary" msgid="1309770926198634150">"Preferált hálózati mód: csak CDMA"</string>
     <string name="preferred_network_mode_evdo_only_summary" msgid="8472220691721269155">"Preferált hálózati mód: csak EvDo"</string>
     <string name="preferred_network_mode_lte_cdma_summary" msgid="3722647806454528426">"Preferált hálózati mód: LTE/CDMA"</string>
+    <string name="preferred_network_mode_lte_cdma_evdo_summary">"Preferált hálózati mód: LTE / CDMA / EvDo"</string>
+    <string name="preferred_network_mode_lte_cdma_evdo_gsm_wcdma_summary">"Preferált hálózati mód: LTE / CMDA / EvDo / GSM / WCDMA"</string>
+
   <string-array name="preferred_network_mode_choices">
     <item msgid="5886604709726177211">"LTE/CDMA"</item>
     <item msgid="3273348576277144124">"Csak EvDo"</item>
@@ -729,14 +736,20 @@
     <string name="voicemail_notification_vibarte_when_dialog_title" msgid="5739583146522136440">"Rezgés"</string>
 
     <!-- 20120417 -->
-    <string name="phone_number_label">Saját telefonszámom</string>
-    <string name="phone_number_summary">Állítsd be a készülékhez tartozó telefonszámot</string>
+    <string name="phone_number_label">Saját telefonszám</string>
+    <string name="phone_number_summary">Készülékhez tartozó telefonszám beállítása</string>
     <!-- 20120420 -->
     <string name="preferred_network_mode_lte_gsm_summary">Preferált hálózati mód: LTE / WCDMA / GSM</string>
     <string name="absent_num">HIÁNYZÓ SZÁM</string>
     <string name="fake_phone_activity_infoText_text">Bejövő álhívás száma</string>
     <string name="fake_phone_activity_phoneNumber_text">(650) 555-1234</string>
     <string name="fake_phone_activity_placeCall_text">Bejövő álhívás</string>
+
+    <!-- 20120706 -->
+    <!-- Noise suppression -->
+    <string name="noise_suppression_title">Zajcsökkentés</string>
+    <string name="noise_suppression_summary">Zajcsökkentés engedélyezése telefonhívások esetén</string>
+    <!-- End Noise suppression -->
 
   <string-array name="voicemail_notification_vibrate_when_entries">
     <item msgid="468237575962916558">"Mindig"</item>
