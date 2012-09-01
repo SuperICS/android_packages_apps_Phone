@@ -65,8 +65,7 @@ import java.util.LinkedList;
  */
 public class BluetoothHandsfree {
     private static final String TAG = "Bluetooth HS/HF";
-    private static final boolean DBG = (PhoneApp.DBG_LEVEL >= 1)
-            && (SystemProperties.getInt("ro.debuggable", 0) == 1);
+    private static final boolean DBG = (PhoneApp.DBG_LEVEL >= 1);
     private static final boolean VDBG = (PhoneApp.DBG_LEVEL >= 2);  // even more logging
 
     public static final int TYPE_UNKNOWN           = 0;
@@ -154,20 +153,10 @@ public class BluetoothHandsfree {
     private static final int BRSF_AG_EC_NR = 1 << 1;
     private static final int BRSF_AG_VOICE_RECOG = 1 << 2;
     private static final int BRSF_AG_IN_BAND_RING = 1 << 3;
-    private static final int BRSF_AG_VOICE_TAG_NUMBE = 1 << 4;
     private static final int BRSF_AG_REJECT_CALL = 1 << 5;
     private static final int BRSF_AG_ENHANCED_CALL_STATUS = 1 <<  6;
-    private static final int BRSF_AG_ENHANCED_CALL_CONTROL = 1 << 7;
-    private static final int BRSF_AG_ENHANCED_ERR_RESULT_CODES = 1 << 8;
-
-    private static final int BRSF_HF_EC_NR = 1 << 0;
     private static final int BRSF_HF_CW_THREE_WAY_CALLING = 1 << 1;
-    private static final int BRSF_HF_CLIP = 1 << 2;
-    private static final int BRSF_HF_VOICE_REG_ACT = 1 << 3;
     private static final int BRSF_HF_REMOTE_VOL_CONTROL = 1 << 4;
-    private static final int BRSF_HF_ENHANCED_CALL_STATUS = 1 <<  5;
-    private static final int BRSF_HF_ENHANCED_CALL_CONTROL = 1 << 6;
-
     // VirtualCall - true if Virtual Call is active, false otherwise
     private boolean mVirtualCallStarted = false;
 
@@ -450,10 +439,7 @@ public class BluetoothHandsfree {
 
                     if (inStream != null) {
                         try {
-                            // inStream.read is a blocking call that won't ever
-                            // return anything, but will throw an exception if the
-                            // connection is closed
-                            int ret = inStream.read(b, 0, 1);
+                            inStream.read(b, 0, 1);
                         }catch (IOException connectException) {
                             // call a message to close this thread and turn off audio
                             // we can't call audioOff directly because then
@@ -822,8 +808,8 @@ public class BluetoothHandsfree {
             cdmaIconLevel = (levelDbm < levelEcio) ? levelDbm : levelEcio;
 
             if (mServiceState != null &&
-                  (mServiceState.getRadioTechnology() == ServiceState.RADIO_TECHNOLOGY_EVDO_0 ||
-                   mServiceState.getRadioTechnology() == ServiceState.RADIO_TECHNOLOGY_EVDO_A)) {
+                  (mServiceState.getRadioTechnology() == ServiceState.RIL_RADIO_TECHNOLOGY_EVDO_0 ||
+                   mServiceState.getRadioTechnology() == ServiceState.RIL_RADIO_TECHNOLOGY_EVDO_A)) {
                   int evdoEcio = signalStrength.getEvdoEcio();
                   int evdoSnr = signalStrength.getEvdoSnr();
                   int levelEvdoEcio = 0;

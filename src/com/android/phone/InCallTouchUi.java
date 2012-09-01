@@ -17,7 +17,6 @@
 package com.android.phone;
 
 import android.content.Context;
-import android.graphics.drawable.Drawable;
 import android.graphics.drawable.LayerDrawable;
 import android.os.Handler;
 import android.os.Message;
@@ -39,10 +38,10 @@ import android.widget.ImageButton;
 import android.widget.PopupMenu;
 
 import com.android.internal.telephony.Call;
+import com.android.internal.telephony.CallManager;
 import com.android.internal.telephony.Phone;
 import com.android.internal.widget.multiwaveview.MultiWaveView;
 import com.android.internal.widget.multiwaveview.MultiWaveView.OnTriggerListener;
-import com.android.internal.telephony.CallManager;
 
 
 /**
@@ -1217,5 +1216,11 @@ public class InCallTouchUi extends FrameLayout
 
     private void log(String msg) {
         Log.d(LOG_TAG, msg);
+    }
+
+    @Override
+    public void onFinishFinalAnimation() {
+        // TODO Auto-generated method stub
+        
     }
 }

@@ -27,8 +27,10 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
+import android.os.RemoteException;
 import android.os.ServiceManager;
 import android.provider.Settings;
+import android.telephony.CellInfo;
 import android.telephony.NeighboringCellInfo;
 import android.telephony.ServiceState;
 import android.telephony.TelephonyManager;
@@ -779,34 +781,34 @@ public class PhoneInterfaceManager extends ITelephony.Stub {
     public int getNetworkType() {
         int radiotech = mPhone.getServiceState().getRadioTechnology();
         switch(radiotech) {
-            case ServiceState.RADIO_TECHNOLOGY_GPRS:
+            case ServiceState.RIL_RADIO_TECHNOLOGY_GPRS:
                 return TelephonyManager.NETWORK_TYPE_GPRS;
-            case ServiceState.RADIO_TECHNOLOGY_EDGE:
+            case ServiceState.RIL_RADIO_TECHNOLOGY_EDGE:
                 return TelephonyManager.NETWORK_TYPE_EDGE;
-            case ServiceState.RADIO_TECHNOLOGY_UMTS:
+            case ServiceState.RIL_RADIO_TECHNOLOGY_UMTS:
                 return TelephonyManager.NETWORK_TYPE_UMTS;
-            case ServiceState.RADIO_TECHNOLOGY_HSDPA:
+            case ServiceState.RIL_RADIO_TECHNOLOGY_HSDPA:
                 return TelephonyManager.NETWORK_TYPE_HSDPA;
-            case ServiceState.RADIO_TECHNOLOGY_HSUPA:
+            case ServiceState.RIL_RADIO_TECHNOLOGY_HSUPA:
                 return TelephonyManager.NETWORK_TYPE_HSUPA;
-            case ServiceState.RADIO_TECHNOLOGY_HSPA:
+            case ServiceState.RIL_RADIO_TECHNOLOGY_HSPA:
                 return TelephonyManager.NETWORK_TYPE_HSPA;
-            case ServiceState.RADIO_TECHNOLOGY_IS95A:
-            case ServiceState.RADIO_TECHNOLOGY_IS95B:
+            case ServiceState.RIL_RADIO_TECHNOLOGY_IS95A:
+            case ServiceState.RIL_RADIO_TECHNOLOGY_IS95B:
                 return TelephonyManager.NETWORK_TYPE_CDMA;
-            case ServiceState.RADIO_TECHNOLOGY_1xRTT:
+            case ServiceState.RIL_RADIO_TECHNOLOGY_1xRTT:
                 return TelephonyManager.NETWORK_TYPE_1xRTT;
-            case ServiceState.RADIO_TECHNOLOGY_EVDO_0:
+            case ServiceState.RIL_RADIO_TECHNOLOGY_EVDO_0:
                 return TelephonyManager.NETWORK_TYPE_EVDO_0;
-            case ServiceState.RADIO_TECHNOLOGY_EVDO_A:
+            case ServiceState.RIL_RADIO_TECHNOLOGY_EVDO_A:
                 return TelephonyManager.NETWORK_TYPE_EVDO_A;
-            case ServiceState.RADIO_TECHNOLOGY_EVDO_B:
+            case ServiceState.RIL_RADIO_TECHNOLOGY_EVDO_B:
                 return TelephonyManager.NETWORK_TYPE_EVDO_B;
-            case ServiceState.RADIO_TECHNOLOGY_EHRPD:
+            case ServiceState.RIL_RADIO_TECHNOLOGY_EHRPD:
                 return TelephonyManager.NETWORK_TYPE_EHRPD;
-            case ServiceState.RADIO_TECHNOLOGY_LTE:
+            case ServiceState.RIL_RADIO_TECHNOLOGY_LTE:
                 return TelephonyManager.NETWORK_TYPE_LTE;
-            case ServiceState.RADIO_TECHNOLOGY_HSPAP:
+            case ServiceState.RIL_RADIO_TECHNOLOGY_HSPAP:
                 return TelephonyManager.NETWORK_TYPE_HSPAP;
             default:
                 return TelephonyManager.NETWORK_TYPE_UNKNOWN;
@@ -834,5 +836,11 @@ public class PhoneInterfaceManager extends ITelephony.Stub {
 
     public int getLteOnGsmMode() {
         return mPhone.getLteOnGsmMode();
+    }
+
+    @Override
+    public List<CellInfo> getAllCellInfo() throws RemoteException {
+        // TODO Auto-generated method stub
+        return null;
     }
 }

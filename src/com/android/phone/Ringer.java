@@ -57,7 +57,7 @@ public class Ringer {
     Uri mCustomRingtoneUri;
 
     Ringtone mRingtone;
-    Vibrator mVibrator = new Vibrator();
+    Vibrator mVibrator;
     IPowerManager mPowerManager;
     volatile boolean mContinueVibrating;
     VibratorThread mVibratorThread;
@@ -85,6 +85,7 @@ public class Ringer {
     /** Private constructor; @see init() */
     private Ringer(Context context) {
         mContext = context;
+        mVibrator = (Vibrator) mContext.getSystemService(Context.VIBRATOR_SERVICE);
         mPowerManager = IPowerManager.Stub.asInterface(ServiceManager.getService(Context.POWER_SERVICE));
     }
 

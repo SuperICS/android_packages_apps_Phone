@@ -21,9 +21,10 @@ import android.animation.AnimatorListenerAdapter;
 import android.content.ContentUris;
 import android.content.Context;
 import android.content.res.Configuration;
+import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
-import android.pim.ContactsAsyncHelper;
 import android.provider.ContactsContract.Contacts;
 import android.telephony.PhoneNumberUtils;
 import android.text.TextUtils;
@@ -60,6 +61,7 @@ public class CallCard extends FrameLayout
                    ContactsAsyncHelper.OnImageLoadCompleteListener {
     private static final String LOG_TAG = "CallCard";
     private static final boolean DBG = (PhoneApp.DBG_LEVEL >= 2);
+    private static final int TOKEN_UPDATE_PHOTO_FOR_CALL_STATE = 0;
 
     /**
      * Reference to the InCallScreen activity that owns us.  This may be
@@ -74,7 +76,6 @@ public class CallCard extends FrameLayout
     // Top-level subviews of the CallCard
     private ViewGroup mCallInfoContainer;  // Container for info about the current call(s)
     private ViewGroup mPrimaryCallInfo;  // "Call info" block #1 (the foreground or ringing call)
-    private ViewGroup mPrimaryCallBanner;  // "Call banner" for the primary call
     private ViewGroup mSecondaryCallInfo;  // "Call info" block #2 (the background "on hold" call)
 
     // "Call state" widgets
@@ -159,7 +160,6 @@ public class CallCard extends FrameLayout
 
         mCallInfoContainer = (ViewGroup) findViewById(R.id.call_info_container);
         mPrimaryCallInfo = (ViewGroup) findViewById(R.id.call_info_1);
-        mPrimaryCallBanner = (ViewGroup) findViewById(R.id.call_banner_1);
         mSecondaryCallInfo = (ViewGroup) findViewById(R.id.call_info_2);
         mCallStateLabel = (TextView) findViewById(R.id.callStateLabel);
         mElapsedTime = (TextView) findViewById(R.id.elapsedTime);
@@ -605,10 +605,25 @@ public class CallCard extends FrameLayout
      * Implemented for ContactsAsyncHelper.OnImageLoadCompleteListener interface.
      * make sure that the call state is reflected after the image is loaded.
      */
-    public void onImageLoadComplete(int token, Object cookie, ImageView iView,
-            boolean imagePresent){
+    @Override
+    public void onImageLoadComplete(int token, Drawable photo, Bitmap photoIcon, Object cookie){
         if (cookie != null) {
-            updatePhotoForCallState((Call) cookie);
+
+            // Note: previously ContactsAsyncHelper has done this job.
+            // TODO: We will need fade-in animation. See issue 5236130.
+
+            ImageView imageView = (ImageView) cookie;
+            if (photo != null) {
+                showImage(imageView, photo);
+            } else if (photoIcon != null) {
+                showImage(imageView, photoIcon);
+            } else {
+                showImage(imageView, R.drawable.picture_unknown);
+            }
+
+            if (token == TOKEN_UPDATE_PHOTO_FOR_CALL_STATE) {
+                updatePhotoForCallState((Call) cookie);
+            }
         }
     }
 
@@ -1349,27 +1364,16 @@ public class CallCard extends FrameLayout
         view.setImageResource(resource);
         view.setVisibility(View.VISIBLE);
     }
+    
+    private static final void showImage(ImageView view, Bitmap bitmap) {
+        showImage(view, new BitmapDrawable(view.getContext().getResources(), bitmap));
+    }
+
 
     /** Helper function to display the drawable in the imageview AND ensure its visibility.*/
     private static final void showImage(ImageView view, Drawable drawable) {
         view.setImageDrawable(drawable);
         view.setVisibility(View.VISIBLE);
-    }
-
-    /**
-     * Sets the left and right margins of the specified ViewGroup (whose
-     * LayoutParams object which must inherit from
-     * ViewGroup.MarginLayoutParams.)
-     *
-     * TODO: Is there already a convenience method like this somewhere?
-     */
-    private void setSideMargins(ViewGroup vg, int margin) {
-        ViewGroup.MarginLayoutParams lp =
-                (ViewGroup.MarginLayoutParams) vg.getLayoutParams();
-        // Equivalent to setting android:layout_marginLeft/Right in XML
-        lp.leftMargin = margin;
-        lp.rightMargin = margin;
-        vg.setLayoutParams(lp);
     }
 
     /**
@@ -1597,4 +1601,5 @@ public class CallCard extends FrameLayout
     private static void log(String msg) {
         Log.d(LOG_TAG, msg);
     }
+
 }
